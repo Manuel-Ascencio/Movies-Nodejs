@@ -3,7 +3,7 @@ const express = require('express');
 const {
   getAllActors,
   getActorById,
-  createActor,
+  createNewActor,
   updateActor,
   deleteActor
 } = require('../controllers/actors-controllers');
@@ -14,7 +14,7 @@ router.get('/', getAllActors);
 
 router.get('/:id', getActorById);
 
-router.post('/', createActor);
+router.post('/', createNewActor);
 
 router.patch('/:id', updateActor);
 

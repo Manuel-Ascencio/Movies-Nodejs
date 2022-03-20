@@ -16,7 +16,7 @@ const Actor = sequelize.define('actor', {
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  raiting: {
+  rating: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
     allowNull: false
@@ -31,7 +31,7 @@ const Actor = sequelize.define('actor', {
   },
   status: {
     type: DataTypes.STRING(10),
-    defaultValue: true,
+    defaultValue: 'active',
     allowNull: false
   }
 });

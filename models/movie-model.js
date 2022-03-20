@@ -23,16 +23,18 @@ const Movie = sequelize.define('movie', {
   },
   status: {
     type: DataTypes.STRING(10),
+    defaultValue: 'active',
     allowNull: false
   },
-  raiting: {
-    type: DataTypes.STRING(100),
+  rating: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
     allowNull: false
   },
-  img: {
-    type: DataTypes.STRING(100),
-    allowNull: false
-  },
+  // img: {
+  //   type: DataTypes.STRING(100),
+  //   allowNull: false
+  // },
   genre: {
     type: DataTypes.STRING(100),
     allowNull: false
