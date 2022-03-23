@@ -1,4 +1,6 @@
-const bcryp = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 const { User } = require('../models/user-model');
 
@@ -6,12 +8,12 @@ const { filterObj } = require('../util/filterObj');
 const { catchAsync } = require('../util/catchAsync');
 const { AppError } = require('../util/appError');
 
+dotenv.config({ path: './config.env' });
+
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.findAll({
     where: { status: 'active' }
   });
-
-  users.password = undefined;
 
   res.status(200).json({
     status: 'success',
@@ -83,4 +85,23 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   await user.update({ status: 'deleted' });
 
   res.status(204).json({ status: 'success' });
+});
+
+exports.loginUser = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ where: { email, status: 'active' } });
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return next(new AppError(404, 'Credentials are invalid'));
+  }
+
+  const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: { token }
+  });
 });
